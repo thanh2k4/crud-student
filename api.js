@@ -18,11 +18,11 @@ mongoose.connect(db, {
 router.post('/', async (req, res) => {
     try {
         const newStudent = new StudentModel();
-        newStudent.StudentId = Number(req.body.StudentId);
-        newStudent.Name = req.body.Name;
-        newStudent.Roll = Number(req.body.Roll ? req.body.Roll : Math.floor(Math.random() * 1000));
-        newStudent.Birthday = req.body.Birthday;
-        newStudent.Address = req.body.Address;
+        newStudent.StudentId = Number(req.body.studentId);
+        newStudent.Name = req.body.name;
+        newStudent.Roll = Number(req.body.roll ? req.body.roll : Math.floor(Math.random() * 1000));
+        newStudent.Birthday = req.body.birthday;
+        newStudent.Address = req.body.address;
         await newStudent.save();
         res.status(200).json({ message: "Data saved successfully" });
     } catch (err) {
@@ -67,9 +67,16 @@ router.delete('/:id', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
     try {
+        const updatedStudent = {
+            StudentId: Number(req.body.studentId),
+            Name: req.body.name,
+            Roll: Number(req.body.roll ? req.body.roll : Math.floor(Math.random() * 1000)),
+            Birthday: req.body.birthday,
+            Address: req.body.address
+        }
         const student = await StudentModel.findOneAndUpdate(
             { _id: req.params.id },
-            { $set: req.body }
+            { $set: updatedStudent }
         );
         res.status(200).json({ message: "Data updated successfully" });
     } catch (err) {
